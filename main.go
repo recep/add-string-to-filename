@@ -13,18 +13,14 @@ func main() {
 	exName := flag.String("s", "", "a string")
 	extName := flag.String("ext", "", "a string")
 
-	fmt.Println(*path)
-	fmt.Println(*exName)
+	flag.Parse()
 
 	if *path == "" || *exName == "" || *extName == "" {
-		fmt.Println(`
-		please enter all commands 
-		go run main.go -path=temp -s=string -ext=txt
+		fmt.Println(`please enter all commands 
+go run main.go -path=temp -s=string -ext=txt
 		`)
 		return
 	}
-
-	flag.Parse()
 
 	folder, err := os.Open(*path)
 	if err != nil {

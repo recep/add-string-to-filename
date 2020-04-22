@@ -1,19 +1,27 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
 )
 
-const exName = "-800x600."
-
+//const exName = "-800x600."
 func main() {
 
-	args := os.Args[1:]
+	dir := flag.String("dir", "", ".")
+	exName := flag.String("s", "", "nil")
 
-	files, err := ioutil.ReadDir(args[0])
+	//TODO special extension support
+	//extName := flag.String("ext", "", "")
+
+	//TODO error handling for empty command line argument
+
+	flag.Parse()
+
+	files, err := ioutil.ReadDir(*dir)
 
 	if err != nil {
 		panic(err)
@@ -28,7 +36,16 @@ func main() {
 		}
 
 		sName := strings.Split(name, ".")
-		newName := sName[0] + exName + sName[1]
+		textName := sName[:len(sName)-1]
+		extName := sName[len(sName)-1]
+
+		var newName string
+
+		for _, n := range textName {
+			newName += n
+		}
+
+		newName += *exName + "." + extName
 
 		err := os.Rename(file.Name(), newName)
 

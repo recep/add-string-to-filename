@@ -3,27 +3,40 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 )
 
-//const exName = "-800x600."
 func main() {
 
-	dir := flag.String("dir", "", ".")
-	exName := flag.String("s", "", "nil")
+	path := flag.String("path", "", "a string")
+	exName := flag.String("s", "", "a string")
+	extName := flag.String("ext", "", "a string")
 
-	//TODO special extension support
-	//extName := flag.String("ext", "", "")
+	fmt.Println(*path)
+	fmt.Println(*exName)
 
-	//TODO error handling for empty command line argument
+	if *path == "" || *exName == "" || *extName == "" {
+		fmt.Println(`
+		please enter all commands 
+		go run main.go -path=temp -s=string -ext=txt
+		`)
+		return
+	}
 
 	flag.Parse()
 
-	files, err := ioutil.ReadDir(*dir)
-
+	folder, err := os.Open(*path)
 	if err != nil {
+		panic(err)
+	}
+
+	files, err := folder.Readdir(0)
+	if err != nil {
+		panic(err)
+	}
+
+	if err := folder.Close(); err != nil {
 		panic(err)
 	}
 
@@ -37,23 +50,25 @@ func main() {
 
 		sName := strings.Split(name, ".")
 		textName := sName[:len(sName)-1]
-		extName := sName[len(sName)-1]
+		extensionName := sName[len(sName)-1]
 
-		var newName string
+		if *extName == extensionName {
 
-		for _, n := range textName {
-			newName += n
+			var newName string
+
+			for _, n := range textName {
+				newName += n
+			}
+
+			name = *path + "/" + name
+			newPath := *path + "/" + newName + *exName + "." + extensionName
+
+			err := os.Rename(name, newPath)
+			if err != nil {
+				panic(err)
+			}
 		}
 
-		newName += *exName + "." + extName
-
-		err := os.Rename(file.Name(), newName)
-
-		if err != nil {
-			panic(err)
-		}
-
-		fmt.Println(name)
 	}
 
 }

@@ -17,8 +17,7 @@ func main() {
 
 	if *path == "" || *exName == "" || *extName == "" {
 		fmt.Println(`please enter all commands 
-go run main.go -path=temp -s=string -ext=txt
-		`)
+		go run main.go -path=temp -s=string -ext=txt`)
 		return
 	}
 
@@ -56,10 +55,10 @@ go run main.go -path=temp -s=string -ext=txt
 				newName += n
 			}
 
-			name = *path + "/" + name
+			oldPath := *path + "/" + name
 			newPath := *path + "/" + newName + *exName + "." + extensionName
 
-			err := os.Rename(name, newPath)
+			err := os.Rename(oldPath, newPath)
 			if err != nil {
 				panic(err)
 			}

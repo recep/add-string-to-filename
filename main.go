@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
 )
@@ -21,17 +22,22 @@ func main() {
 		return
 	}
 
-	folder, err := os.Open(*path)
-	if err != nil {
-		panic(err)
-	}
+	//folder, err := os.Open(*path)
+	//if err != nil {
+	//	panic(err)
+	//}
 
-	files, err := folder.Readdir(0)
-	if err != nil {
-		panic(err)
-	}
+	//files, err := folder.Readdir(0)
+	//if err != nil {
+	//	panic(err)
+	//}
 
-	if err := folder.Close(); err != nil {
+	//if err := folder.Close(); err != nil {
+	//	panic(err)
+	//}
+
+	files, err := ioutil.ReadDir(*path)
+	if err != nil {
 		panic(err)
 	}
 
@@ -47,9 +53,11 @@ func main() {
 		textName := sName[:len(sName)-1]
 		extensionName := sName[len(sName)-1]
 
-		var newName string
-		var oldPath string
-		var newPath string
+		var (
+			newName string
+			oldPath string
+			newPath string
+		)
 
 		if *extName == "all" {
 
@@ -63,7 +71,6 @@ func main() {
 			if err := os.Rename(oldPath, newPath); err != nil {
 				panic(err)
 			}
-
 		}
 
 		if *extName == extensionName {
@@ -80,5 +87,4 @@ func main() {
 			}
 		}
 	}
-
 }

@@ -47,23 +47,38 @@ func main() {
 		textName := sName[:len(sName)-1]
 		extensionName := sName[len(sName)-1]
 
-		if *extName == extensionName {
+		var newName string
+		var oldPath string
+		var newPath string
 
-			var newName string
+		if *extName == "all" {
 
 			for _, n := range textName {
 				newName += n
 			}
 
-			oldPath := *path + "/" + name
-			newPath := *path + "/" + newName + *exName + "." + extensionName
+			oldPath = *path + "/" + name
+			newPath = *path + "/" + newName + *exName + "." + extensionName
 
-			err := os.Rename(oldPath, newPath)
-			if err != nil {
+			if err := os.Rename(oldPath, newPath); err != nil {
+				panic(err)
+			}
+
+		}
+
+		if *extName == extensionName {
+
+			for _, n := range textName {
+				newName += n
+			}
+
+			oldPath = *path + "/" + name
+			newPath = *path + "/" + newName + *exName + "." + extensionName
+
+			if err := os.Rename(oldPath, newPath); err != nil {
 				panic(err)
 			}
 		}
-
 	}
 
 }

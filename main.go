@@ -10,15 +10,15 @@ import (
 
 func main() {
 
-	path := flag.String("path", "", "a string")
-	exName := flag.String("s", "", "a string")
-	extName := flag.String("ext", "", "a string")
+	path := flag.String("path", "", "PATH")
+	exName := flag.String("s", "", "text")
+	extName := flag.String("ext", "", "extension name of file")
 
 	flag.Parse()
 
 	if *path == "" || *exName == "" || *extName == "" {
 		fmt.Println(`please enter all commands 
-		go run main.go -path=temp -s=string -ext=txt`)
+		go run main.go -path=tmp -s=string -ext=txt`)
 		return
 	}
 
@@ -87,4 +87,15 @@ func main() {
 			}
 		}
 	}
+
+	nFiles, err := ioutil.ReadDir(*path)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Your new files:\n", strings.Repeat("-", 25))
+	for _, file := range nFiles {
+		fmt.Println(file.Name())
+	}
+
 }

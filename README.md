@@ -1,11 +1,11 @@
 # add-string-to-filename
-Appending string to filenames in Go
+Append string to filenames in Go
 
 ```
-go run main.go -path=files -s=text -ext=txt
+go run main.go -path=tmp -s=text -ext=extension-name-of-file
 ```
 
-Change filenames of all types
+Change names of all file types
 
 ```
-go run main.go -path=files -s=text -ext=all
+go run main.go -path=tmp -s=text -ext=all

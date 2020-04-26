@@ -27,6 +27,8 @@ func main() {
 		panic(err)
 	}
 
+	var ok string
+
 	for _, file := range files {
 
 		name := file.Name()
@@ -56,6 +58,7 @@ func main() {
 			if err := os.Rename(oldPath, newPath); err != nil {
 				panic(err)
 			}
+			ok = "yes"
 		}
 
 		if *extName == extensionName {
@@ -68,7 +71,13 @@ func main() {
 			if err := os.Rename(oldPath, newPath); err != nil {
 				panic(err)
 			}
+			ok = "yes"
 		}
+	}
+
+	if ok != "yes" {
+		fmt.Println("You hasn't this file extension !")
+		return
 	}
 
 	nFiles, err := ioutil.ReadDir(*path)

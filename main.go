@@ -68,10 +68,6 @@ func main() {
 			if err := os.Rename(oldPath, newPath); err != nil {
 				panic(err)
 			}
-
-		} else {
-			fmt.Println("You hasn't this file extension")
-			return
 		}
 	}
 

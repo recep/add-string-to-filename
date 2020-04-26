@@ -27,7 +27,7 @@ func main() {
 		panic(err)
 	}
 
-	var ok string
+	var ok bool
 
 	for _, file := range files {
 
@@ -58,7 +58,7 @@ func main() {
 			if err := os.Rename(oldPath, newPath); err != nil {
 				panic(err)
 			}
-			ok = "yes"
+			ok = true
 		}
 
 		if *extName == extensionName {
@@ -71,11 +71,11 @@ func main() {
 			if err := os.Rename(oldPath, newPath); err != nil {
 				panic(err)
 			}
-			ok = "yes"
+			ok = true
 		}
 	}
 
-	if ok != "yes" {
+	if !ok {
 		fmt.Println("You hasn't this file extension !")
 		return
 	}

@@ -76,7 +76,7 @@ func main() {
 	}
 
 	if !ok {
-		fmt.Println("You hasn't this file extension !")
+		fmt.Println("You haven't this file extension !")
 		return
 	}
 

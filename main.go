@@ -22,20 +22,6 @@ func main() {
 		return
 	}
 
-	//folder, err := os.Open(*path)
-	//if err != nil {
-	//	panic(err)
-	//}
-
-	//files, err := folder.Readdir(0)
-	//if err != nil {
-	//	panic(err)
-	//}
-
-	//if err := folder.Close(); err != nil {
-	//	panic(err)
-	//}
-
 	files, err := ioutil.ReadDir(*path)
 	if err != nil {
 		panic(err)
@@ -61,9 +47,8 @@ func main() {
 
 		if *extName == "all" {
 
-			for _, n := range textName {
-				newName += n
-			}
+			//Birden fazla nokta içeren dosya isimlerini birleştirme
+			newName = strings.Join(textName, ".")
 
 			oldPath = *path + "/" + name
 			newPath = *path + "/" + newName + *exName + "." + extensionName
@@ -75,9 +60,7 @@ func main() {
 
 		if *extName == extensionName {
 
-			for _, n := range textName {
-				newName += n
-			}
+			newName = strings.Join(textName, ".")
 
 			oldPath = *path + "/" + name
 			newPath = *path + "/" + newName + *exName + "." + extensionName
@@ -85,6 +68,10 @@ func main() {
 			if err := os.Rename(oldPath, newPath); err != nil {
 				panic(err)
 			}
+
+		} else {
+			fmt.Println("You hasn't this file extension")
+			return
 		}
 	}
 

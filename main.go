@@ -49,11 +49,11 @@ func main() {
 
 		if *extName == "all" {
 
-			//Birden fazla nokta içeren dosya isimlerini birleştirme
+			//Birden fazla nokta içeren dosya varsa ayrılan isimlerini birleştirme
 			newName = strings.Join(textName, ".")
 
-			oldPath = *path + "/" + name
-			newPath = *path + "/" + newName + *exName + "." + extensionName
+			oldPath = *path + name
+			newPath = *path + newName + *exName + "." + extensionName
 
 			if err := os.Rename(oldPath, newPath); err != nil {
 				panic(err)
@@ -65,8 +65,8 @@ func main() {
 
 			newName = strings.Join(textName, ".")
 
-			oldPath = *path + "/" + name
-			newPath = *path + "/" + newName + *exName + "." + extensionName
+			oldPath = *path + name
+			newPath = *path + newName + *exName + "." + extensionName
 
 			if err := os.Rename(oldPath, newPath); err != nil {
 				panic(err)
@@ -76,7 +76,7 @@ func main() {
 	}
 
 	if !ok {
-		fmt.Println("You haven't this file extension !")
+		fmt.Println("You do not have this file type!")
 		return
 	}
 

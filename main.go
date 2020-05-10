@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"strings"
 )
@@ -80,14 +81,29 @@ func main() {
 		return
 	}
 
+	printFiles(path, files)
+}
+
+func printFiles(path *string, files []os.FileInfo) {
+
+	fmt.Printf("%-30s | %s\n", "Filename", "Changed")
+	fmt.Println(strings.Repeat("-", 45))
+
 	nFiles, err := ioutil.ReadDir(*path)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	fmt.Println("Your new files:\n", strings.Repeat("-", 25))
-	for _, file := range nFiles {
-		fmt.Println(file.Name())
-	}
+	for i, file := range nFiles {
 
+		var c string
+
+		if file.Name() != files[i].Name() {
+			c = "+"
+		}
+
+		fmt.Printf("%-30s | %s\n", file.Name(), c)
+		fmt.Println(strings.Repeat("·", 45))
+
+	}
 }

@@ -7,6 +7,8 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	"github.com/fatih/color"
 )
 
 func main() {
@@ -42,37 +44,12 @@ func main() {
 		textName := sName[:len(sName)-1]
 		extensionName := sName[len(sName)-1]
 
-		var (
-			newName string
-			oldPath string
-			newPath string
-		)
-
 		if *extName == "all" {
-
-			//Birden fazla nokta içeren dosya varsa ayrılan isimlerini birleştirme
-			newName = strings.Join(textName, ".")
-
-			oldPath = *path + name
-			newPath = *path + newName + *exName + "." + extensionName
-
-			if err := os.Rename(oldPath, newPath); err != nil {
-				panic(err)
-			}
-			ok = true
+			ok = changer(path, exName, textName, name, extensionName)
 		}
 
 		if *extName == extensionName {
-
-			newName = strings.Join(textName, ".")
-
-			oldPath = *path + name
-			newPath = *path + newName + *exName + "." + extensionName
-
-			if err := os.Rename(oldPath, newPath); err != nil {
-				panic(err)
-			}
-			ok = true
+			ok = changer(path, exName, textName, name, extensionName)
 		}
 	}
 
@@ -86,7 +63,7 @@ func main() {
 
 func printFiles(path *string, files []os.FileInfo) {
 
-	fmt.Printf("%-30s | %s\n", "Filename", "Changed")
+	color.Blue("%-30s | %s\n", "Filename", "Changed")
 	fmt.Println(strings.Repeat("-", 45))
 
 	nFiles, err := ioutil.ReadDir(*path)
@@ -101,9 +78,20 @@ func printFiles(path *string, files []os.FileInfo) {
 		if file.Name() != files[i].Name() {
 			c = "+"
 		}
-
-		fmt.Printf("%-30s | %s\n", file.Name(), c)
+		fmt.Printf("%-30s | %s\n", file.Name(), color.RedString(c))
 		fmt.Println(strings.Repeat("·", 45))
 
 	}
+}
+
+func changer(path, exName *string, textName []string, name, extensionName string) bool {
+	newName := strings.Join(textName, ".")
+
+	oldPath := *path + name
+	newPath := *path + newName + *exName + "." + extensionName
+
+	if err := os.Rename(oldPath, newPath); err != nil {
+		log.Fatal(err)
+	}
+	return true
 }

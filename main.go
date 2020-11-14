@@ -3,95 +3,50 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/recep/add-string-to-filename/model"
 	"io/ioutil"
 	"log"
-	"os"
-	"strings"
-
-	"github.com/fatih/color"
 )
 
 func main() {
 
 	path := flag.String("path", "", "PATH")
-	exName := flag.String("s", "", "text")
-	extName := flag.String("ext", "", "extension name of file")
+	text := flag.String("s", "", "text")
+	ext := flag.String("ext", "", "extension name of file")
 
 	flag.Parse()
 
-	if *path == "" || *exName == "" || *extName == "" {
+	if *path == "" || *text == "" || *ext == "" {
 		fmt.Println(`please enter all commands 
-		go run main.go -path=tmp -s=string -ext=txt`)
+		go run main.go -path=folder/ -s=string -ext=.txt`)
 		return
 	}
 
 	files, err := ioutil.ReadDir(*path)
 	if err != nil {
-		panic(err)
+		log.Println(err)
 	}
 
-	var ok bool
+	// create an empty file object
+	file := &model.File{}
 
-	for _, file := range files {
+	for _, f := range files {
+		file.GetFileInfo(f.Name())
 
-		name := file.Name()
-
-		if name == "main.go" {
-			continue
+		if *ext == file.ExtName {
+			err := file.Add(*text, *path)
+			if err != nil {
+				log.Fatalln(err)
+			}
 		}
 
-		sName := strings.Split(name, ".")
-		textName := sName[:len(sName)-1]
-		extensionName := sName[len(sName)-1]
-
-		if *extName == "all" {
-			ok = changer(path, exName, textName, name, extensionName)
+		if *ext == ".all" {
+			err := file.Add(*text, *path)
+			if err != nil {
+				log.Fatalln(err)
+			}
 		}
 
-		if *extName == extensionName {
-			ok = changer(path, exName, textName, name, extensionName)
-		}
+		fmt.Println(file)
 	}
-
-	if !ok {
-		fmt.Println("You do not have this file type!")
-		return
-	}
-
-	printFiles(path, files)
-}
-
-func printFiles(path *string, files []os.FileInfo) {
-
-	color.Blue("%-30s | %s\n", "Filename", "Changed")
-	fmt.Println(strings.Repeat("-", 45))
-
-	nFiles, err := ioutil.ReadDir(*path)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for i, file := range nFiles {
-
-		var c string
-
-		if file.Name() != files[i].Name() {
-			c = "+"
-		}
-		fmt.Printf("%-30s | %s\n", file.Name(), color.RedString(c))
-		fmt.Println(strings.Repeat("·", 45))
-
-	}
-}
-
-func changer(path, exName *string, textName []string, name, extensionName string) bool {
-	newName := strings.Join(textName, ".")
-
-	oldPath := *path + name
-	newPath := *path + newName + *exName + "." + extensionName
-
-	if err := os.Rename(oldPath, newPath); err != nil {
-		log.Fatal(err)
-	}
-	return true
 }

@@ -23,8 +23,8 @@ func (f *File) String() string {
 	return fmt.Sprintf("File: %s", f.FullName)
 }
 
-func (f *File) GetFileInfo(fileName string) {
-	f.FullName = fileName
+func (f *File) GetFileInfo(file string) {
+	f.FullName = file
 	f.ExtName = filepath.Ext(f.FullName)
 	f.Name = strings.TrimSuffix(f.FullName, f.ExtName)
 }
@@ -56,6 +56,7 @@ func (f *File) AddEnd(text, path string) error {
 // AddBeginning() method adds string to beginning of the file name.
 func (f *File) AddBeginning(text, path string) error {
 	oldPath := path + f.FullName
+	f.OldName = f.FullName
 
 	text += f.Name
 	f.Name = text
@@ -71,6 +72,24 @@ func (f *File) AddBeginning(text, path string) error {
 
 	err := json.Writer(f, "./history/last.json")
 	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (f *File) Rename(text,path string, file File) error {
+	oldPath := path + f.FullName
+	f.OldName = f.FullName
+
+	f.Name = text
+	f.FullName = f.Name + f.ExtName
+	f.Edited = true
+	f.ModTime = time.Now().String()
+
+	newPath := path + f.FullName
+
+	if err := os.Rename(oldPath, newPath); err != nil {
 		return err
 	}
 

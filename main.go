@@ -11,17 +11,19 @@ import (
 func main() {
 
 	path := flag.String("path", "", "PATH")
+	fName := flag.String("f","","file name")
 	ae := flag.String("ae", "", "adds string to the end of the file name")
 	ab := flag.String("ab", "", "adds string to the beginning of the file name.")
+	rn := flag.String("rn","","rename file name")
 	ext := flag.String("ext", "", "extension name of file")
 
 	flag.Parse()
 
-	if *path == "" || *ext == "" {
+	if *path == ""  {
 		fmt.Println(`please enter all commands 
 		go run main.go 
-		-path=folder/ -ae=string -ext=.txt
-		-path=folder/ -ab=string -ext=.txt`)
+		-path folder/ -ae string -ext .txt
+		-path folder/ -ab string -ext .txt`)
 		return
 	}
 
@@ -43,6 +45,13 @@ func main() {
 			}
 
 			err = file.AddBeginning(*ab, *path)
+			if err != nil {
+				log.Fatalln(err)
+			}
+		}
+
+		if file.FullName == *fName && *rn != "" {
+			err := file.Rename(*rn,*path,*file)
 			if err != nil {
 				log.Fatalln(err)
 			}

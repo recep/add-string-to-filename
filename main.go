@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/recep/add-string-to-filename/model"
+	"github.com/recep/add-string-to-filename/internal/model"
 	"io/ioutil"
 	"log"
 )
@@ -11,14 +11,17 @@ import (
 func main() {
 
 	path := flag.String("path", "", "PATH")
-	text := flag.String("s", "", "text")
+	ae := flag.String("ae", "", "adds string to the end of the file name")
+	ab := flag.String("ab", "", "adds string to the beginning of the file name.")
 	ext := flag.String("ext", "", "extension name of file")
 
 	flag.Parse()
 
-	if *path == "" || *text == "" || *ext == "" {
+	if *path == "" || *ext == "" {
 		fmt.Println(`please enter all commands 
-		go run main.go -path=folder/ -s=string -ext=.txt`)
+		go run main.go 
+		-path=folder/ -ae=string -ext=.txt
+		-path=folder/ -ab=string -ext=.txt`)
 		return
 	}
 
@@ -33,20 +36,17 @@ func main() {
 	for _, f := range files {
 		file.GetFileInfo(f.Name())
 
-		if *ext == file.ExtName {
-			err := file.Add(*text, *path)
+		if *ext == file.ExtName || *ext == ".all" {
+			err := file.AddEnd(*ae, *path)
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			err = file.AddBeginning(*ab, *path)
 			if err != nil {
 				log.Fatalln(err)
 			}
 		}
-
-		if *ext == ".all" {
-			err := file.Add(*text, *path)
-			if err != nil {
-				log.Fatalln(err)
-			}
-		}
-
 		fmt.Println(file)
 	}
 }

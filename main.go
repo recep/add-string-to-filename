@@ -2,60 +2,62 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	"github.com/recep/add-string-to-filename/internal/config"
 	"github.com/recep/add-string-to-filename/internal/model"
 	"io/ioutil"
 	"log"
+	"os"
+	"path/filepath"
 )
 
 func main() {
+	fs := flag.NewFlagSet(filepath.Base(os.Args[0]), flag.ExitOnError)
 
-	path := flag.String("path", "", "PATH")
-	fName := flag.String("f","","file name")
-	ae := flag.String("ae", "", "adds string to the end of the file name")
-	ab := flag.String("ab", "", "adds string to the beginning of the file name.")
-	rn := flag.String("rn","","rename file name")
-	ext := flag.String("ext", "", "extension name of file")
-
-	flag.Parse()
-
-	if *path == ""  {
-		fmt.Println(`please enter all commands 
-		go run main.go 
-		-path folder/ -ae string -ext .txt
-		-path folder/ -ab string -ext .txt`)
-		return
+	opts, err := config.ConfigureOptions(fs, os.Args[1:])
+	if err != nil {
+		config.PrintUsageErrorAndDie(err)
 	}
 
-	files, err := ioutil.ReadDir(*path)
+	if opts.ShowHelp {
+		config.PrintHelpAndDie()
+	}
+
+	files, err := ioutil.ReadDir(opts.Path)
 	if err != nil {
 		log.Println(err)
 	}
 
-	// create an empty file object
+	// create a file object
 	file := &model.File{}
 
 	for _, f := range files {
 		file.GetFileInfo(f.Name())
 
-		if *ext == file.ExtName || *ext == ".all" {
-			err := file.AddEnd(*ae, *path)
-			if err != nil {
-				log.Fatalln(err)
+		if opts.Ext == file.ExtName || opts.Ext == "all" {
+			if opts.AddBeg != "" {
+				err := file.AddEnd(opts.AddEnd, opts.Path)
+				if err != nil {
+					log.Fatalln(err)
+				}
+				return
 			}
 
-			err = file.AddBeginning(*ab, *path)
-			if err != nil {
-				log.Fatalln(err)
+			if opts.AddBeg != "" {
+				err := file.AddBeginning(opts.AddEnd, opts.Path)
+				if err != nil {
+					log.Fatalln(err)
+				}
+				return
 			}
 		}
 
-		if file.FullName == *fName && *rn != "" {
-			err := file.Rename(*rn,*path,*file)
+		if opts.Rename != "" && (opts.File == file.FullName || opts.File == file.Name) {
+			err := file.Rename(opts.Rename, opts.Path)
 			if err != nil {
 				log.Fatalln(err)
 			}
+			return
 		}
-		fmt.Println(file)
+
 	}
 }

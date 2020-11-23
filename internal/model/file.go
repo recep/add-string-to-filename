@@ -78,7 +78,7 @@ func (f *File) AddBeginning(text, path string) error {
 	return nil
 }
 
-func (f *File) Rename(text,path string, file File) error {
+func (f *File) Rename(text,path string) error {
 	oldPath := path + f.FullName
 	f.OldName = f.FullName
 

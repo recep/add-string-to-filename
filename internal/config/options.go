@@ -9,16 +9,16 @@ import (
 )
 
 var usageStr = `
-Usage: editor-go
+Usage: File Name Editor-GO
 Options:
-	-p, --path <path your folder> 
-	-ae <string>
-	-ab <string>
-	-f, --file <file name>
-	-r, --rename <new file name>
-	-u, --undo 
+	-p, --path <path>			path your folder 
+	-ae <string>				Add string to the end of the file name
+	-ab <string>				Add string to the beginning of the file name
+	-f, --file <file name>			specific file 
+	-r, --rename <new file name>		new file name
+	-u, --undo 				undo last change
 Common Options: 
-	-help
+	-help					show help
 `
 
 func PrintUsageErrorAndDie(err error) {
@@ -33,14 +33,15 @@ func PrintHelpAndDie() {
 }
 
 type Options struct {
-	Path     string `json:"path"`
-	AddEnd   string `json:"add_end"`
-	AddBeg   string `json:"add_beg"`
-	Ext      string `json:"ext"`
-	File     string `json:"file"`
-	Rename   string `json:"rename"`
-	Undo     bool   `json:"undo"`
-	ShowHelp bool   `json:"show_help"`
+	Path      string `json:"path"`
+	AddEnd    string `json:"add_end"`
+	AddBeg    string `json:"add_beg"`
+	Ext       string `json:"ext"`
+	File      string `json:"file"`
+	Rename    string `json:"rename"`
+	Undo      bool   `json:"undo"`
+	ShowFiles bool   `json:"show_files"`
+	ShowHelp  bool   `json:"show_help"`
 }
 
 func ConfigureOptions(fs *flag.FlagSet, args []string) (*Options, error) {
@@ -50,13 +51,14 @@ func ConfigureOptions(fs *flag.FlagSet, args []string) (*Options, error) {
 	fs.StringVar(&opts.Path, "path", "", "Folder Path")
 	fs.StringVar(&opts.AddEnd, "ae", "", "Add string to the end of the file name")
 	fs.StringVar(&opts.AddBeg, "ab", "", "Add string to the beginning of the file name")
-	fs.StringVar(&opts.Ext,"ext","all","Extension name of file")
+	fs.StringVar(&opts.Ext, "ext", "all", "Extension name of file")
 	fs.StringVar(&opts.File, "f", "", "specific file")
 	fs.StringVar(&opts.File, "file", "", "specific file")
-	fs.StringVar(&opts.Rename, "r", "", "new file name")
+	fs.StringVar(&opts.Rename, "rn", "", "new file name")
 	fs.StringVar(&opts.Rename, "rename", "", "new file name")
 	fs.BoolVar(&opts.Undo, "u", false, "undo last change")
 	fs.BoolVar(&opts.Undo, "undo", false, "undo last change")
+	fs.BoolVar(&opts.ShowFiles, "ls", false, "show files")
 	fs.BoolVar(&opts.ShowHelp, "h", false, "show help message")
 	fs.BoolVar(&opts.ShowHelp, "help", false, "show help message")
 

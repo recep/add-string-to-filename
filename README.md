@@ -1,18 +1,41 @@
 # File Name Editor-GO
 
-Add string to the end of the file name
+**Add string to the end of the file name**  
+
 ```
-go run main.go -path folder/ -ae [string] -ext .[extension_name]
+go run main.go -p folder/ -ae <string> -ext .<extension_name>
 ```
 
-Add string to the beginning of the file name
+**Add string to the beginning of the file name**  
 ```
-go run main.go -path folder/ -ab [string] -ext .[extension_name]
+go run main.go -p folder/ -ab <string> -ext .<extension_name>
 ```
 
-Rename   
+**Rename**   
 ```
-go run main.go -path folder/ -f [filename] -rn [new file name] 
+go run main.go -p folder/ -f <filename> -rn <new file name> 
+```
+
+**Show All Files**  
+
+```
+go run main.go -p folder2/ -ls
+```
+**Show Help Message**  
+```
+go run main.go -h
+```
+```bash
+Usage: File Name Editor-GO
+Options:
+        -p, --path <path>                       path your folder 
+        -ae <string>                            Add string to the end of the file name
+        -ab <string>                            Add string to the beginning of the file name
+        -f, --file <file name>                  specific file 
+        -r, --rename <new file name>            new file name
+        -u, --undo                              undo last change
+Common Options: 
+        -help                                   show help
 ```
 ### Examples     
 ---
@@ -27,7 +50,7 @@ folder/
 **Run**  
 
 ```
-go run main.go -path folder/ -ae -api -ext .json
+go run main.go -p folder/ -ae -api -ext .json
 ```
 **After**  
 
@@ -39,14 +62,13 @@ folder/
 ---
 **Run**  
 ```
-go run main.go -path folder/ -f doc-1.txt -rn doc-2
+go run main.go -p folder/ -f doc-1.txt -rn doc-2
 ```
 ```bash
 folder/
 ├── doc-2.txt *
 └── sw-api.json
 ```
-
 ---
 ### TODO
 
@@ -58,9 +80,9 @@ folder/
 
 - [ ] undo last change  
 
-- [ ] command line print design  
+- [x] command line print design  
 
-- [ ] flag options helper  
+- [x] flag options helper  
 - [x] rename file 
 
   

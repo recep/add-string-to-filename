@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"github.com/recep/add-string-to-filename/internal/cli"
 	"github.com/recep/add-string-to-filename/internal/config"
 	"github.com/recep/add-string-to-filename/internal/model"
 	"io/ioutil"
@@ -33,31 +34,24 @@ func main() {
 	for _, f := range files {
 		file.GetFileInfo(f.Name())
 
+		if opts.ShowFiles {
+			cli.ShowFiles(*file)
+			continue
+		}
+
 		if opts.Ext == file.ExtName || opts.Ext == "all" {
-			if opts.AddBeg != "" {
-				err := file.AddEnd(opts.AddEnd, opts.Path)
-				if err != nil {
-					log.Fatalln(err)
-				}
-				return
+			if opts.AddEnd != "" {
+				file.AddEnd(opts.AddEnd, opts.Path)
 			}
 
 			if opts.AddBeg != "" {
-				err := file.AddBeginning(opts.AddEnd, opts.Path)
-				if err != nil {
-					log.Fatalln(err)
-				}
-				return
+				file.AddBeginning(opts.AddEnd, opts.Path)
 			}
 		}
 
 		if opts.Rename != "" && (opts.File == file.FullName || opts.File == file.Name) {
-			err := file.Rename(opts.Rename, opts.Path)
-			if err != nil {
-				log.Fatalln(err)
-			}
-			return
+			file.Rename(opts.Rename, opts.Path)
 		}
-
 	}
+	cli.PrintFile(*file)
 }

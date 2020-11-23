@@ -1,9 +1,9 @@
 {
- "name": "doc-1",
- "full_name": "doc-1.txt",
- "ext_name": ".txt",
- "path": "",
+ "name": "swa-a",
+ "full_name": "swa-a.json",
+ "ext_name": ".json",
+ "path": "folder/",
  "edited": true,
- "old_name": "doc.txt",
- "mod_time": "2020-11-21 14:23:06.370217362 +0300 +03 m=+0.000323907"
+ "old_name": "swa.json",
+ "mod_time": "2020-11-23 12:38:07.025778048 +0300 +03 m=+0.000126194"
 }

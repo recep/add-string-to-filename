@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 )
 
+// TODO Refactor this function
 func Writer(data interface{}, path string) error {
 	jsonFile, err := json.MarshalIndent(data, "", " ")
 	if err != nil {

@@ -7,11 +7,12 @@ go run main.go -p folder/ -ae <string> -ext .<extension_name>
 ```
 
 **Add string to the beginning of the file name**  
+
 ```
 go run main.go -p folder/ -ab <string> -ext .<extension_name>
 ```
 
-**Rename**   
+**Rename a file**   
 ```
 go run main.go -p folder/ -f <filename> -rn <new file name> 
 ```
@@ -20,6 +21,10 @@ go run main.go -p folder/ -f <filename> -rn <new file name>
 
 ```
 go run main.go -p folder2/ -ls
+```
+**Undo Last Change**  
+```
+go run main.go -u
 ```
 **Show Help Message**  
 ```
@@ -32,13 +37,16 @@ Options:
         -ae <string>                            Add string to the end of the file name
         -ab <string>                            Add string to the beginning of the file name
         -f, --file <file name>                  specific file 
-        -r, --rename <new file name>            new file name
+        -rn, --rename <new file name>           new file name
         -u, --undo                              undo last change
+        -ls										show all files
 Common Options: 
-        -help                                   show help
+        -help                                   show help message
 ```
 ### Examples     
 ---
+* Add string to the end of the file name  
+
 **Before**  
 
 ```bash
@@ -60,7 +68,10 @@ folder/
 └── sw-api.json *
 ```
 ---
+* Rename a file  
+
 **Run**  
+
 ```
 go run main.go -p folder/ -f doc-1.txt -rn doc-2
 ```
@@ -70,19 +81,6 @@ folder/
 └── sw-api.json
 ```
 ---
-### TODO
+### LICENSE  
+The MIT License (MIT) - see [LICENSE.md](https://github.com/recep/add-string-to-filename/blob/master/LICENSE.md) for more details
 
-- [x] add string to the end of the file name  
-
-- [x] add string to the beginning of the file name  
-
-- [x] extension filter   
-
-- [ ] undo last change  
-
-- [x] command line print design  
-
-- [x] flag options helper  
-- [x] rename file 
-
-  

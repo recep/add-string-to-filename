@@ -1,11 +1,10 @@
-package json
+package tools
 
 import (
 	"encoding/json"
 	"io/ioutil"
 )
 
-// TODO Refactor this function
 func Writer(data interface{}, path string) error {
 	jsonFile, err := json.MarshalIndent(data, "", " ")
 	if err != nil {
@@ -20,4 +19,11 @@ func Writer(data interface{}, path string) error {
 	return nil
 }
 
-// TODO function => READ from a json file
+func Reader(path string) ([]byte, error) {
+	data, err := ioutil.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}

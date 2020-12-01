@@ -1,7 +1,8 @@
 package model
 
 import (
-	"github.com/recep/add-string-to-filename/internal/json"
+	"encoding/json"
+	"github.com/recep/add-string-to-filename/internal/tools"
 	"log"
 	"os"
 	"path/filepath"
@@ -10,13 +11,13 @@ import (
 )
 
 type File struct {
-	Name     string `json:"name"`
-	FullName string `json:"full_name"`
-	ExtName  string `json:"ext_name"`
-	Path     string `json:"path"`
-	Edited   bool   `json:"edited"`
-	OldName  string `json:"old_name"`
-	ModTime  string `json:"mod_time"`
+	Name     string `tools:"name"`
+	FullName string `tools:"full_name"`
+	ExtName  string `tools:"ext_name"`
+	Path     string `tools:"path"`
+	Edited   bool   `tools:"edited"`
+	OldName  string `tools:"old_name"`
+	ModTime  string `tools:"mod_time"`
 }
 
 //func (f *File) String() string {
@@ -47,7 +48,7 @@ func (f *File) AddEnd(text, path string) {
 		log.Fatalln(err)
 	}
 
-	err := json.Writer(f, "./history/last.json")
+	err := tools.Writer(f, "./history/last.json")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -71,7 +72,7 @@ func (f *File) AddBeginning(text, path string) {
 		log.Fatalln(err)
 	}
 
-	err := json.Writer(f, "./history/last.json")
+	err := tools.Writer(f, "./history/last.json")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -94,7 +95,29 @@ func (f *File) Rename(text, path string) {
 		log.Fatalln(err)
 	}
 
-	if err := json.Writer(f, "./history/last.json"); err != nil {
+	if err := tools.Writer(f, "./history/last.json"); err != nil {
+		log.Fatalln(err)
+	}
+}
+
+func (f *File) Undo(data []byte) {
+
+	if err := json.Unmarshal(data, f); err != nil {
+		log.Fatalln(err)
+	}
+
+	oldPath := f.Path + f.FullName
+
+	f.Name = strings.TrimSuffix(f.OldName, f.ExtName)
+	f.FullName,f.OldName = f.OldName, f.FullName
+
+	newPath := f.Path + f.FullName
+
+	if err := os.Rename(oldPath, newPath); err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := tools.Writer(f, "./history/last.json"); err != nil {
 		log.Fatalln(err)
 	}
 }

@@ -13,11 +13,12 @@ go run main.go -p folder/ -ab <string> -ext .<extension_name>
 ```
 
 **Rename a file**   
+
 ```
 go run main.go -p folder/ -f <filename> -rn <new file name> 
 ```
 
-**Show All Files**  
+**Show All Files**
 
 ```
 go run main.go -p folder2/ -ls

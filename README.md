@@ -40,7 +40,7 @@ Options:
         -f, --file <file name>                  specific file 
         -rn, --rename <new file name>           new file name
         -u, --undo                              undo last change
-        -ls										show all files
+        -ls									    show all files
 Common Options: 
         -help                                   show help message
 ```

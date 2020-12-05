@@ -34,15 +34,15 @@ func PrintHelpAndDie() {
 }
 
 type Options struct {
-	Path      string `tools:"path"`
-	AddEnd    string `tools:"add_end"`
-	AddBeg    string `tools:"add_beg"`
-	Ext       string `tools:"ext"`
-	File      string `tools:"file"`
-	Rename    string `tools:"rename"`
-	Undo      bool   `tools:"undo"`
-	ShowFiles bool   `tools:"show_files"`
-	ShowHelp  bool   `tools:"show_help"`
+	Path      string `json:"path"`
+	AddEnd    string `json:"add_end"`
+	AddBeg    string `json:"add_beg"`
+	Ext       string `json:"ext"`
+	File      string `json:"file"`
+	Rename    string `json:"rename"`
+	Undo      bool   `json:"undo"`
+	ShowFiles bool   `json:"show_files"`
+	ShowHelp  bool   `json:"show_help"`
 }
 
 func ConfigureOptions(fs *flag.FlagSet, args []string) (*Options, error) {
@@ -67,7 +67,7 @@ func ConfigureOptions(fs *flag.FlagSet, args []string) (*Options, error) {
 		return nil, err
 	}
 
-	if !opts.ShowHelp && opts.Path == "" && !opts.Undo  {
+	if !opts.ShowHelp && opts.Path == "" && !opts.Undo {
 		err := errors.New("please specify all arguments")
 		return nil, err
 	}

@@ -11,13 +11,13 @@ import (
 )
 
 type File struct {
-	Name     string `tools:"name"`
-	FullName string `tools:"full_name"`
-	ExtName  string `tools:"ext_name"`
-	Path     string `tools:"path"`
-	Edited   bool   `tools:"edited"`
-	OldName  string `tools:"old_name"`
-	ModTime  string `tools:"mod_time"`
+	Name     string `json:"name"`
+	FullName string `json:"full_name"`
+	ExtName  string `json:"ext_name"`
+	Path     string `json:"path"`
+	Edited   bool   `json:"edited"`
+	OldName  string `json:"old_name"`
+	ModTime  string `json:"mod_time"`
 }
 
 //func (f *File) String() string {
@@ -109,7 +109,7 @@ func (f *File) Undo(data []byte) {
 	oldPath := f.Path + f.FullName
 
 	f.Name = strings.TrimSuffix(f.OldName, f.ExtName)
-	f.FullName,f.OldName = f.OldName, f.FullName
+	f.FullName, f.OldName = f.OldName, f.FullName
 
 	newPath := f.Path + f.FullName
 

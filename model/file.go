@@ -32,7 +32,7 @@ func (f *File) GetFileInfo(file string) {
 }
 
 // AddEnd() method adds string to the end of the file name.
-func (f *File) AddEnd(text, path string) {
+func (f *File) AddEnd(text, path string) string {
 	oldPath := path + f.FullName
 	f.OldName = f.FullName
 
@@ -52,10 +52,11 @@ func (f *File) AddEnd(text, path string) {
 	if err != nil {
 		log.Fatalln(err)
 	}
+	return f.FullName
 }
 
 // AddBeginning() method adds string to beginning of the file name.
-func (f *File) AddBeginning(text, path string) {
+func (f *File) AddBeginning(text, path string) string {
 	oldPath := path + f.FullName
 	f.OldName = f.FullName
 
@@ -76,10 +77,11 @@ func (f *File) AddBeginning(text, path string) {
 	if err != nil {
 		log.Fatalln(err)
 	}
+	return f.FullName
 }
 
 // Rename file
-func (f *File) Rename(text, path string) {
+func (f *File) Rename(text, path string) string {
 	oldPath := path + f.FullName
 	f.OldName = f.FullName
 
@@ -98,10 +100,10 @@ func (f *File) Rename(text, path string) {
 	if err := tools.Writer(f, "./history/last.json"); err != nil {
 		log.Fatalln(err)
 	}
+	return f.FullName
 }
 
 func (f *File) Undo(data []byte) {
-
 	if err := json.Unmarshal(data, f); err != nil {
 		log.Fatalln(err)
 	}
